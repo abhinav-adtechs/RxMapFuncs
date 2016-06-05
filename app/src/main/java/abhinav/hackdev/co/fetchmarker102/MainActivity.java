@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -78,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements
                         return markerDataList;
                     }
                 })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<MarkerDataList>() {
                     @Override
                     public void onCompleted() {
@@ -94,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements
                         Log.d(TAG, "onNext: ");
                         Log.d(TAG, "onNext() called with: " + "markerDataList = [" + markerDataList + "]");
                         Log.d(TAG, "fetcherNetworkCall: " + markerDataList.getMarkerDataList().get(0).getUsername());
-                        plotMarkers() ;
+                        //plotMarkers() ;
                     }
                 });
 
@@ -135,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements
     private void fetchUserVideo(String vidUrl) {
 
         /*
-        *TODO: Create a observable to fetch video and make an intent onNext.
+        *TODO: Create an observable to fetch video and make an intent onNext.
         * */
     }
 
