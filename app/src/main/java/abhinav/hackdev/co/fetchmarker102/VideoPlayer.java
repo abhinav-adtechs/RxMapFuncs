@@ -8,11 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Surface;
 
 import com.google.android.exoplayer.ExoPlayer;
-import com.google.android.exoplayer.FrameworkSampleSource;
-import com.google.android.exoplayer.MediaCodecAudioTrackRenderer;
-import com.google.android.exoplayer.MediaCodecVideoTrackRenderer;
-import com.google.android.exoplayer.SampleSource;
-import com.google.android.exoplayer.TrackRenderer;
 
 /**
  * Created by abhinav on 05/06/16.
