@@ -21,6 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".VideoPlayer">
+
+        </activity>
 
         <service android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService"/>
     </application>

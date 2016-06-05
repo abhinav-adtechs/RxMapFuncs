@@ -60,6 +60,11 @@ public class MarkerFetcher {
 
     public MarkerDataList fetcherNetworkCall(final LatLng value){
 
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         okhttp3.Response response = null;
         String fetcherURL = "http://private-7e17da-markers.apiary-mock.com/api/fetchmarkers" ;
 

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
@@ -34,15 +35,14 @@ import rx.subjects.PublishSubject;
 public class MainActivity extends AppCompatActivity implements
         OnMapReadyCallback, MapboxMap.OnMarkerClickListener, MapboxMap.OnCameraChangeListener{
 
+    public static final String VIDEO_URL = "VIDEO_URL";
+    public static final int REQUEST_MAPVIEW_PERMS = 1 ;
     private static final String TAG = "SPLTAG";
-    private MapView mapView ;
-    private MapboxMap mapboxMapGlobal ;
-
     private static final String[] MAPVIEW_PERMS = {
             Manifest.permission.ACCESS_FINE_LOCATION
     };
-    public static final int REQUEST_MAPVIEW_PERMS = 1 ;
-
+    private MapView mapView ;
+    private MapboxMap mapboxMapGlobal ;
     private PublishSubject<LatLng> fetchMarkersSubject ;
     private MarkerDataList markerDataList ;
 
@@ -93,21 +93,23 @@ public class MainActivity extends AppCompatActivity implements
                     }
 
                     @Override
-                    public void onNext(MarkerDataList markerDataList) {
-                        Log.d(TAG, "onNext: ");
-                        Log.d(TAG, "onNext() called with: " + "markerDataList = [" + markerDataList + "]");
-                        Log.d(TAG, "fetcherNetworkCall: " + markerDataList.getMarkerDataList().get(0).getUsername());
-                        //plotMarkers() ;
+                    public void onNext(MarkerDataList markerDataListLocal) {
+//                        Log.d(TAG, "onNext: ");
+//                        Log.d(TAG, "onNext() called with: " + "markerDataList = [" + markerDataList + "]");
+//                        Log.d(TAG, "fetcherNetworkCall: " + markerDataList.getMarkerDataList().get(0).getUsername());
+                        markerDataList = markerDataListLocal;
+                        plotMarkers() ;
                     }
                 });
 
     }
 
     private void plotMarkers() {
+        mapboxMapGlobal.clear();
         for (MarkerDataList.MarkerData markerData : markerDataList.getMarkerDataList()){
             mapboxMapGlobal.addMarker(new MarkerOptions()
-                                        .title(markerData.getUsername())
-                                        .position(new LatLng((double) markerData.getLatVal(),(double) markerData.getLongVal() ))) ;
+                    .title(markerData.getUsername())
+                    .position(new LatLng((double) markerData.getLatVal(),(double) markerData.getLongVal() ))) ;
         }
 
     }
@@ -118,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements
         fetchMarkersSubject.onNext(mapboxMap.getCameraPosition().target);
         Log.d(TAG, "onMapReady() called with: " + "mapboxMap = [" + mapboxMap + "]");
         mapboxMapGlobal.setOnCameraChangeListener(this);
+        mapboxMapGlobal.setOnMarkerClickListener(this);
     }
 
 
@@ -136,10 +139,9 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void fetchUserVideo(String vidUrl) {
-
-        /*
-        *TODO: Create an observable to fetch video and make an intent onNext.
-        * */
+        Intent i = new Intent(this, VideoPlayer.class);
+        i.putExtra(VIDEO_URL,vidUrl);
+        startActivity(i);
     }
 
     @Override

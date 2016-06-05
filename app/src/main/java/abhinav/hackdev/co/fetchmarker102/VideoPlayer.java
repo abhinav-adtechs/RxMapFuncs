@@ -9,9 +9,7 @@ import android.view.Surface;
 
 import com.google.android.exoplayer.ExoPlayer;
 
-/**
- * Created by abhinav on 05/06/16.
- */
+
 public class VideoPlayer extends AppCompatActivity {
 
     private ExoPlayer exoPlayer ;
@@ -49,6 +47,7 @@ public class VideoPlayer extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        assert exoPlayer!=null ;
         exoPlayer.release();
         super.onPause();
     }
